@@ -1,3 +1,5 @@
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.Scanner;
 import java.util.Stack;
 
@@ -12,28 +14,34 @@ public class Main {
         for (int i = 0; i < t; i++) {
             String command = in.next();
 
-            if (command.equals("push")) {
-                int num = in.nextInt();
-                stack.push(num);
-            } else if (command.equals("top")) {
-                if (stack.empty()){
-                    sb.append("-1").append('\n');
-                    continue;
-                }
-                sb.append(stack.peek()).append('\n');
-            } else if (command.equals("size")) {
-                sb.append(stack.size()).append('\n');
-            } else if (command.equals("empty")) {
-                if (stack.isEmpty()){
-                    sb.append("1").append('\n');
-                }else
-                    sb.append("0").append('\n');
-            } else if (command.equals("pop")) {
-                if (stack.empty()){
-                    sb.append("-1").append('\n');
-                    continue;
-                }
-                sb.append(stack.pop()).append('\n');
+            switch (command) {
+                case "push":
+                    int num = in.nextInt();
+                    stack.push(num);
+                    break;
+                case "top":
+                    if (stack.isEmpty()) {
+                        sb.append("-1").append('\n');
+                        break;
+                    }
+                    sb.append(stack.peek()).append('\n');
+                    break;
+                case "size":
+                    sb.append(stack.size()).append('\n');
+                    break;
+                case "empty":
+                    if (stack.isEmpty()) {
+                        sb.append("1").append('\n');
+                    } else
+                        sb.append("0").append('\n');
+                    break;
+                case "pop":
+                    if (stack.isEmpty()) {
+                        sb.append("-1").append('\n');
+                        break;
+                    }
+                    sb.append(stack.pop()).append('\n');
+                    break;
             }
         }
         System.out.println(sb);
