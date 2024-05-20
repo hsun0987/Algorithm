@@ -31,6 +31,17 @@ public class Main {
             }
         }
 
+        /* 다른 풀이
+         m -= 45;
+        if(m < 0){
+            h -= 1;
+            m += 60;
+        }
+        if (h < 0){
+            h += 24;
+        }
+        */
+
         bw.write(h + " " + m);
         bw.flush();
         bw.close();
