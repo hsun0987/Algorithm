@@ -38,11 +38,11 @@ public class Main {
             }
         };
 
-        String str = br.readLine();
+        char[] str = br.readLine().toCharArray();
         // 2. 입력된 문자열의 한 글자씩 있는지 확인
-        for (int i = 0; i < str.length(); i++) {
-            if(map.get(str.charAt(i)) == -1){
-                map.replace(str.charAt(i), i);
+        for (int i = 0; i < str.length; i++) {
+            if(map.get(str[i]) == -1){
+                map.replace(str[i], i);
             }
         }
         for (char key : map.keySet()){
