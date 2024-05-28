@@ -4,8 +4,7 @@ import java.util.*;
 public class Main {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-
-        // 연산자를 우선순위로 저장
+        // 연산자 저장
         HashSet<Character> set = new HashSet<>(){
             {
                 add('*');
@@ -14,7 +13,7 @@ public class Main {
                 add('-');
             }
         };
-
+        // 피연산자 저장
         HashMap<Character, Double> map = new HashMap<>();
 
         Stack<Double> stack = new Stack<>();
