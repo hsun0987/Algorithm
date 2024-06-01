@@ -4,6 +4,7 @@ import java.util.*;
 public class Main {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringBuilder sb = new StringBuilder();
         TreeMap <String, Integer> map = new TreeMap<>();
 
         // 종의 총 개수
@@ -23,8 +24,8 @@ public class Main {
         List<String> keySet = new ArrayList<>(map.keySet());
         // 3. 비율 = 종 개수 / map 총개수 * 100
         for (String key : keySet) {
-            System.out.print(key + " ");
-            System.out.printf("%.4f \n",  (double) map.get(key) / len * 100);
+            sb.append(key).append(" ").append(String.format("%.4f", (double) map.get(key) / len * 100)).append("\n");
         }
+        System.out.println(sb);
     }
 }
