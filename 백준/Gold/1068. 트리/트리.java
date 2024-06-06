@@ -19,7 +19,7 @@ public class Main {
         int n = Integer.parseInt(br.readLine());
         visited = new boolean[n];
 
-        // root != 0 아닐 경우 대비
+        // root != 0 일 경우 대비
         int root = -1;
 
         // 노드 테이블
