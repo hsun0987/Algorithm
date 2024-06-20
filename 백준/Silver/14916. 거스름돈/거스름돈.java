@@ -6,28 +6,25 @@ public class Main {
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
         int n = Integer.parseInt(br.readLine());
+        br.close();
         int answer = 0;
-        int[] coin = new int[]{5, 2};
 
-        if(n > 100000 || n <= 1 || n == 3){
-            System.out.println(-1);
-            return;
-        }
-
-        int i = 0;
-        while(n > 0){
-            int c = coin[i];
-            answer += n / c;
-            n %= c;
-
-            while(n % 2 != 0){
-                n += 5;
-                answer -= 1;
+        // 5로 나누어 떨어지지 않으면 2를 빼준다
+        while (n > 0){
+            if(n % 5 == 0){
+                answer += n / 5;
+                break;
             }
-            i = 1;
+            n -= 2;
+            answer++;
         }
 
-        bw.write(answer + "");
+        if(n < 0){
+            bw.write("-1");
+        }else {
+            bw.write(answer + "");
+        }
+
         bw.flush();
         bw.close();
     }
