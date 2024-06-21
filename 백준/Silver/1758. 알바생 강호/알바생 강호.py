@@ -3,15 +3,13 @@
 
 n = int(input())
 
-arr = []
-for _ in range(n):
-    arr.append(int(input()))
+arr = [int(input()) for _ in range(n)]
 
 arr.sort(reverse=True)
 
 answer = 0
 for i in range(0, n):
-    tip = arr[i] - (i+1 - 1)
+    tip = arr[i] - i
     if tip > 0:
         answer += tip
     else:
