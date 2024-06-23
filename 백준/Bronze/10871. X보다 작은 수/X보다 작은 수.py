@@ -1,9 +1,9 @@
 n, x = map(int, input().split())
 a = list(map(int, input().split()))
 
-answer = ""
-for i in range(n):
-    if x > a[i]:
-        answer += str(a[i]) + " "
-        
-print(answer)
+answer = []
+for i in a:
+    if x > i:
+        answer.append(str(i))
+
+print(' '.join(answer))
