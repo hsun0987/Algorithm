@@ -1,7 +1,9 @@
 # 2+1 가장 싼 것 무료 3으로 나눠떨어질 때 합X
 
 n = int(input())
-arr = [int(input()) for i in range(n)]
+arr = []
+for _ in range(n):
+    arr.append(int(input()))
 
 arr.sort(reverse=True)
 answer = 0
