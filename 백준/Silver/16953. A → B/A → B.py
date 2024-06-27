@@ -1,5 +1,5 @@
 # B -> A
-# 1. B가 2로 나눠지지 않을 경우
+# 1. B 뒷자리가 1인 경우
 # 뒷자리 1을 없앰
 # 2. B가 2로 나눠질 경우
 # 계속 계산
@@ -18,7 +18,7 @@ while True:
     if b < a:
         answer = -1
         break
-    if b % 2 != 0 and b % 10 == 1:
+    if b % 10 == 1:
         b = int(b / 10)
         answer += 1
     else:
