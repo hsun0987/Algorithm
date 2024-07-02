@@ -6,29 +6,26 @@
 import sys
 input = sys.stdin.readline
 
+def solution(n, k, arr):
+    stack = []
+    cnt = 0 # k개 셀 변수
+    
+    stack.append(arr[0])
+    for i in range(1, n):        
+        while stack and cnt < k and stack[-1] < arr[i]:
+            stack.pop()
+            cnt += 1
+        stack.append(arr[i])
+
+    if cnt < k:
+        for i in range(k-cnt):
+            stack.pop()
+            
+    return ''.join(stack)
+
+# 입력
 n, k = map(int, input().split())
-arr = list(map(int, input().strip()))
-stack = []
+arr = input().strip()
 
-cnt = 0 # k개 셀 변수
-stack.append(arr[0])
-for i in range(1, n):
-    if cnt == k:
-        for x in arr[i:]:
-            stack.append(x)
-        break
-    
-    while stack and stack[-1] < arr[i]:
-        if cnt == k:
-            break
-        stack.pop()
-        cnt += 1
-    
-    stack.append(arr[i])
-
-if cnt < k:
-    for i in range(k-cnt):
-        stack.pop()
-        
-for x in stack: 
-    print(x, end="")
+# 출력
+print(solution(n, k, arr))
