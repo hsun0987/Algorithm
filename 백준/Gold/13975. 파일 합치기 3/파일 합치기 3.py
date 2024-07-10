@@ -1,0 +1,29 @@
+import sys
+import heapq
+
+def solution(n, arr):
+   file = []
+   answer = 0
+   
+   heapq.heapify(arr)
+   
+   for _ in range(n-1):
+      a = heapq.heappop(arr)
+      b = heapq.heappop(arr)
+      ab = a + b
+      heapq.heappush(arr, ab)
+      file.append(ab)
+   
+   answer = sum(file)
+   return answer
+
+#입력
+input = sys.stdin.readline
+t = int(input())
+
+for _ in range(t):
+   n = int(input())
+   arr = list(map(int, input().split()))
+   
+   #출력    
+   print(solution(n, arr))
