@@ -4,15 +4,12 @@
 import sys
 
 input = sys.stdin.readline
-
 n = int(input())
 
 # 1층을 1번 인덱스로
 stairs = [0] * 301
 for i in range(1, n + 1):
    stairs[i] = int(input())
-
-dp = [0] * 301 
 
 # 초기값 설정
 dp = [0] * 301
