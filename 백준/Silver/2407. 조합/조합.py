@@ -1,4 +1,3 @@
-# 연결된 숫자 중 가장 긴 부분 수열
 import sys
 
 input = sys.stdin.readline
