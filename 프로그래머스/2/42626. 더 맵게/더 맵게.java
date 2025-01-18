@@ -10,23 +10,24 @@ class Solution {
             heap.add(scoville[i]);
         }
         
-        while(!heap.isEmpty()){
+        while(heap.size() > 1){
             // 최솟값이 K보다 크거나 같아지면 끝
             if (heap.peek() >= K){
                 break;
-            }else if (heap.size() == 1){
-                // 힙의 크기가 1이고 K이상 만들 수 없는 경우 
-                answer = -1;
-                break;
-            }else{
-                // 스코빌 지수 = 최솟값 + (두번째 최솟값 * 2)
-                // 힙에서 최솟값 2개로 계산 후 다시 push
-                int a = heap.poll();
-                int b = heap.poll();
-                heap.add(a + (b*2));
-                answer++;
             }
+            // 스코빌 지수 = 최솟값 + (두번째 최솟값 * 2)
+            // 힙에서 최솟값 2개로 계산 후 다시 push
+            int a = heap.poll();
+            int b = heap.poll();
+            heap.add(a + (b*2));
+            answer++;
         }
+        
+        if (heap.size() == 1 && heap.peek() < K) {
+            // 힙의 크기가 1이고 K이상 만들 수 없는 경우
+            answer = -1;
+        }
+        
         return answer;
     }
 }
