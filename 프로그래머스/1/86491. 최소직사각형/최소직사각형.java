@@ -10,13 +10,8 @@ class Solution {
         int height = 1;
 
         for (int[] size : sizes){
-            if (size[0] >= size[1]){
-                width = Math.max(width, size[0]);
-                height = Math.max(height, size[1]);
-            }else{
-                width = Math.max(width, size[1]);
-                height = Math.max(height, size[0]);
-            }
+            width = Math.max(width, Math.max(size[0], size[1]));
+            height = Math.max(height, Math.min(size[0], size[1]));
         }
         
         answer = width * height;
