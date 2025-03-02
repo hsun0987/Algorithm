@@ -41,12 +41,13 @@ public class Main {
         for (int i = 1; i < n+1; i++) {
             for (int j = 1; j < n+1; j++) {
                 if (graph[i][j] == 1 && visited[i][j] != 1){
-                    bfs(i, j, n, n);
+                    home = 1;
+                    dfs(i, j);
                     homes.add(home);
                 }
             }
         }
-        
+
         // 단지 수 오름차순 정렬
         Collections.sort(homes);
 
@@ -58,26 +59,19 @@ public class Main {
         bw.flush();
         bw.close();
     }
-    public static void bfs(int si, int sj, int ei, int ej){
-        home = 1;
-        // 시작 좌표를 큐에 삽입
-        q.add(new int[]{si, sj});
+
+    public static void dfs(int si, int sj){
         visited[si][sj] = 1;
 
-        while(!q.isEmpty()){
-            int[] cur = q.poll();
+        // 상하좌우 방향 내에서
+        for (int[] dir : direction) {
+            // 현재 좌표에서 이동
+            int ni = si + dir[0];
+            int nj = sj + dir[1];
 
-            // 상하좌우 방향 내에서
-            for (int[] dir : direction) {
-                // 현재 좌표에서 이동
-                int ni = cur[0] + dir[0];
-                int nj = cur[1] + dir[1];
-
-                if (0 <= ni && 0 <= nj && graph[ni][nj] == 1 && visited[ni][nj] == 0){
-                    q.add(new int[]{ni, nj});
-                    visited[ni][nj] = 1;
-                    home++;
-                }
+            if (0 <= ni && 0 <= nj && graph[ni][nj] == 1 && visited[ni][nj] == 0){
+                home++;
+                dfs(ni, nj);
             }
         }
     }
