@@ -2,24 +2,26 @@ import java.io.*;
 import java.util.*;
 
 public class Main {
-    static int[][] visited;
     static int[][] graph;
-    static int[][] direction;
+    static int[][] visited;
+    static int[] dx = {0, 0, -1, 1};
+    static int[] dy = {1, -1, 0, 0};
     static Queue<int[]> q;
+    static int n, m;
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
-        // 상하좌우 방향 중 1 여부 확인
-        // visited 에 누적 거리 저장
-        // 도착점까지 왔으면 visited 값 반환
+        // 1. 그래프 만들기
+        // 2. 상하좌우를 비교하며 갈 수 있는 길 탐색
+        // 3. 지나가는 곳(visited) 누적
 
         StringTokenizer st = new StringTokenizer(br.readLine());
-        int n = Integer.parseInt(st.nextToken());
-        int m = Integer.parseInt(st.nextToken());
+        n = Integer.parseInt(st.nextToken());
+        m = Integer.parseInt(st.nextToken());
 
-        graph = new int[n+2][m+2];
+        graph = new int[n+1][m+1];
         for (int i = 1; i < n+1; i++) {
             String str = br.readLine();
             for (int j = 1; j < m+1; j++) {
@@ -29,43 +31,40 @@ public class Main {
             }
         }
 
-        // 누적 거리 저장
         visited = new int[n+1][m+1];
-        direction = new int[][]{{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
         q = new LinkedList<>();
-
-        int answer = bfs(1, 1, n, m);
+        int answer = bfs(1, 1);
 
         bw.write(answer + "");
-
         bw.flush();
         bw.close();
+
     }
-    public static int bfs(int si, int sj, int ei, int ej){
-        // 시작 좌표를 큐에 삽입
-        q.add(new int[]{si, sj});
-        visited[si][sj] = 1;
+
+    public static int bfs(int x, int y){
+        q.add(new int[]{x, y});
+        visited[x][y] = 1;
 
         while(!q.isEmpty()){
             int[] cur = q.poll();
-            // 도착지점
-            if (cur[0] == ei && cur[1] == ej){
-                return visited[ei][ej];
+
+            if (cur[0] == n && cur[1] == m){
+                return visited[n][m];
             }
 
-            // 상하좌우 방향 내에서
-            for (int[] dir : direction) {
-                // 현재 좌표에서 이동
-                int ni = cur[0] + dir[0];
-                int nj = cur[1] + dir[1];
+            for (int i = 0; i < 4; i++) {
+                int nx = dx[i] + cur[0];
+                int ny = dy[i] + cur[1];
 
-                if (0 <= ni && 0 <= nj && graph[ni][nj] == 1 && visited[ni][nj] == 0){
-                    q.add(new int[]{ni, nj});
-                    // 거리누적
-                    visited[ni][nj] = visited[cur[0]][cur[1]] + 1;
+                // 배열의 크기 범위 주의
+                if (nx >= 0 && ny >= 0 && nx < n+1 && ny < m+1){
+                    if (visited[nx][ny] == 0 && graph[nx][ny] == 1){
+                        q.add(new int[]{nx, ny});
+                        visited[nx][ny] = visited[cur[0]][cur[1]] + 1;
+                    }
                 }
             }
         }
-        return 2;
+        return visited[n][m];
     }
 }
