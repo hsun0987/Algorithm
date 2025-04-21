@@ -4,58 +4,39 @@ import java.util.*;
 public class Main {
     static boolean[][] graph;
     static boolean[][] visited;
-    static int n, m;
 
-    public static void dfs(int x, int y){
-        // 상하좌우 좌표
-        int[] dx = {0,0,1,-1};
-        int[] dy = {1,-1,0,0};
-
-        visited[y][x] = true;
-
-        // 상하좌우 중 1이고 방문 하지 않은 곳 방문
-        for (int i = 0; i < 4; i++) {
-            int nextX = x + dx[i];
-            int nextY = y + dy[i];
-
-            if(graph[nextY][nextX] && !visited[nextY][nextX]){
-                dfs(nextX, nextY);
-            }
-        }
-    }
-
-    public static void main(String[] args) throws IOException{
+    public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
-        int tcase = Integer.parseInt(br.readLine());
+//        1. 그래프 만들기
+//        2. dfs 함수 구현
+//        3. 방문했을 시 visited 1→0 변경
+//        4. 재귀로 인접한 1을 다 돌고 오면 count +1
 
-        for (int i = 0; i < tcase; i++) {
-            String[] input = br.readLine().split(" ");
-            // 가로
-            m = Integer.parseInt(input[0]);
-            // 세로
-            n = Integer.parseInt(input[1]);
-            // 간선
-            int k = Integer.parseInt(input[2]);
+        int t = Integer.parseInt(br.readLine());
+        for (int i = 0; i < t; i++) {
+            StringTokenizer st = new StringTokenizer(br.readLine());
+            int m = Integer.parseInt(st.nextToken());
+            int n = Integer.parseInt(st.nextToken());
+            int k = Integer.parseInt(st.nextToken());
 
-            // 인접 리스트 생성
-            graph = new boolean[60][60];
-            visited = new boolean[60][60];
+            graph = new boolean[52][52];
+            visited = new boolean[52][52];
 
             for (int j = 0; j < k; j++) {
-                StringTokenizer st = new StringTokenizer(br.readLine(), " ");
-                int u = Integer.parseInt(st.nextToken());
-                int v = Integer.parseInt(st.nextToken());
-                graph[v+1][u+1] = true;
+                st = new StringTokenizer(br.readLine());
+                int x = Integer.parseInt(st.nextToken());
+                int y = Integer.parseInt(st.nextToken());
+
+                graph[y+1][x+1] = true;
             }
 
             int answer = 0;
-            for (int y = 1; y <= n; y++) {
-                for (int x = 1; x <= m; x++) {
-                    if (graph[y][x] && !visited[y][x]) {
+            for (int x = 1; x < n+1; x++) {
+                for (int y = 1; y < m+1; y++) {
+                    if (graph[x][y] && !visited[x][y]) {
                         dfs(x, y);
-                        // dfs를 호출한 횟수가 답
                         answer++;
                     }
                 }
@@ -65,6 +46,21 @@ public class Main {
 
         bw.flush();
         bw.close();
+    }
 
+    static void dfs(int x, int y){
+        visited[x][y] = true;
+
+        int[] dx = new int[]{0, 1, 0, -1};
+        int[] dy = new int[]{1, 0, -1, 0};
+
+        for (int i = 0; i < 4; i++) {
+            int nx = dx[i] + x;
+            int ny = dy[i] + y;
+
+            if (graph[nx][ny] && !visited[nx][ny]){
+                dfs(nx, ny);
+            }
+        }
     }
 }
