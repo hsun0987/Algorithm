@@ -4,69 +4,74 @@ import java.util.*;
 public class Main {
     static boolean[][] graph;
     static boolean[] visited;
-    static int n, m;
-    static BufferedWriter bw;
+    static StringBuilder sb;
+    static int n;
+
     static Queue<Integer> q;
 
-    public static void dfs(int idx) throws IOException{
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        n = Integer.parseInt(st.nextToken());
+        int m = Integer.parseInt(st.nextToken());
+        int v = Integer.parseInt(st.nextToken());
+
+        // 1. 그래프 만들기
+        graph = new boolean[n+1][n+1];
+        for (int i = 0; i < m; i++) {
+            st = new StringTokenizer(br.readLine());
+            int a = Integer.parseInt(st.nextToken());
+            int b = Integer.parseInt(st.nextToken());
+            graph[a][b] = true;
+            graph[b][a] = true;
+        }
+
+        // 2. 초기화
+        visited = new boolean[n+1];
+        sb = new StringBuilder();
+
+        // 3. dfs/bfs 호출
+        dfs(v);
+        sb.append("\n");
+
+        // 다시 방문해야되니까 초기화
+        visited = new boolean[n+1];
+        q = new LinkedList<>();
+        bfs(v);
+
+        bw.write(sb + "");
+        bw.flush();
+        bw.close();
+    }
+
+    static void dfs(int idx){
         visited[idx] = true;
-        bw.write(idx + " ");
-        for (int i = 1; i <= n; i++) {
-            if(!visited[i] && graph[idx][i]){
+        // dfs를 호출했을 때 방문할 노드 출력
+        sb.append(idx + " ");
+
+        for (int i = 1; i < n+1; i++) {
+            if (!visited[i] && graph[idx][i]){
                 dfs(i);
             }
         }
     }
 
-    public static void bfs(int idx) throws IOException{
-        q.add(idx);
+    static void bfs(int idx){
         visited[idx] = true;
+        q.add(idx);
 
-        while(!q.isEmpty()){
-            // 1. 큐에서 처음값 pop
+        while (!q.isEmpty()){
             int node = q.poll();
-            bw.write(node + " ");
-            for (int i = 1; i <= n; i++) {
-                if(!visited[i] && graph[node][i]){
-                    // 2. 나온 인덱스에 연결된 노드 값 큐에 담기
+            //  다음 방문할 노드 pop할 때 출력
+            sb.append(node + " ");
+            for (int i = 1; i < n+1; i++) {
+                if (!visited[i] && graph[node][i]){
                     q.add(i);
                     visited[i] = true;
                 }
             }
         }
-    }
-    public static void main(String[] args) throws IOException{
-      BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-      bw = new BufferedWriter(new OutputStreamWriter(System.out));
-
-      String[] input = br.readLine().split(" ");
-      // 정점(노드)
-      n = Integer.parseInt(input[0]);
-      // 간선
-      m = Integer.parseInt(input[1]);
-      // 시작 노드
-      int v = Integer.parseInt(input[2]);
-
-      // 인접 리스트 생성
-      graph = new boolean[n+1][n+1];
-
-    for (int i = 0; i < m; i++) {
-        StringTokenizer st = new StringTokenizer(br.readLine(), " ");
-        int x = Integer.parseInt(st.nextToken());
-        int y = Integer.parseInt(st.nextToken());
-        graph[x][y] = true;
-        graph[y][x] = true;
-    }
-
-    visited = new boolean[n+1];
-    dfs(v);
-    bw.write("\n");
-
-    visited = new boolean[n+1];
-    q = new LinkedList<>();
-    bfs(v);
-
-    bw.flush();
-    bw.close();
     }
 }
