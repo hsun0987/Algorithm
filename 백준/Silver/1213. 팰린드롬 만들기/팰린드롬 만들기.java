@@ -7,7 +7,7 @@ public class Main {
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
         String[] str = br.readLine().split("");
-        String answer = "";
+        StringBuilder answer = new StringBuilder();
 
         // 알파벳, 갯수
         HashMap<String, Integer> map = new HashMap<>();
@@ -23,23 +23,22 @@ public class Main {
         String  odd = "";
         int cnt = 0;
         for (String i: keys){
+            int n = map.get(i);
             // 홀수면
-            if (map.get(i) % 2 == 1){
-                if (map.get(i) >= 3){
-                    // 3 이상이면 1개 빼고 다 써줘야함
-                    for (int j = 0; j < (map.get(i)-1) / 2; j++) {
-                        answer += i;
-                    }
-                }
+            if (n % 2 == 1){
                 odd = i;
                 cnt++;
-            } else { // 짝수면
-                // 팰린드롬 만들기
-                // 개수의 절반을 적고 뒤집어서 뒤에 붙여주자
-                // 만약 홀수 문자가 있으면 그것을 가운데에 적어주기
-                for (int j = 0; j < map.get(i) / 2; j++) {
-                    answer += i;
+                if (n == 1){
+                    // 1이면 가운데 하나만 쓰면 되니까 건너뜀
+                    continue;
                 }
+                // 3 이상이면 1개 빼고 다 써줘야함
+                n -= 1;
+            }
+            // 팰린드롬 만들기
+            // 개수의 절반을 적고 뒤집어서 뒤에 붙여주자
+            for (int j = 0; j < n / 2; j++) {
+                answer.append(i);
             }
         }
 
@@ -50,11 +49,12 @@ public class Main {
             StringBuilder sb = new StringBuilder(answer);
             sb.reverse();
 
+            // 홀수 1문자가 있으면 가운데에 붙여주기
             if (!odd.equals("")){
-                answer += odd;
+                answer.append(odd);
             }
-
-            answer += sb + "";
+            // 뒤집은 문자 절반 붙이기
+            answer.append(sb);
             bw.write(answer + "");
         }
 
