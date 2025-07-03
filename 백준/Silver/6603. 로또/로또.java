@@ -5,7 +5,6 @@ public class Main {
     static int K;
     static int[] S;
     static int[] temp;
-    static boolean[] visited;
     static StringBuilder sb;
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -25,7 +24,6 @@ public class Main {
             }
 
             temp = new int[6];
-            visited = new boolean[K];
             sb = new StringBuilder();
             dfs(0, 0);
             bw.write(sb.toString() + "\n");
@@ -45,12 +43,8 @@ public class Main {
         }
 
         for (int i = start; i < K; i++) {
-            if (!visited[i]){
-                visited[i] = true;
-                temp[depth] = S[i];
-                dfs(depth+1, i+1);
-                visited[i] = false;
-            }
+            temp[depth] = S[i];
+            dfs(depth+1, i+1);
         }
     }
 }
