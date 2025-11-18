@@ -3,49 +3,52 @@ import java.util.*;
 
 public class Main {
     static boolean[][] graph;
-    static boolean[] visited;
-    static int n, m;
+    static boolean[] vistited;
+    static Queue<Integer> q;
     static int answer;
+    static int N;
 
-    public static void dfs(int idx){
-        answer++;
-        visited[idx] = true;
-        for (int i = 1; i <= n; i++) {
-            if(!visited[i] && graph[idx][i]){
-                dfs(i);
-            }
-        }
-    }
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
-    public static void main(String[] args) throws IOException{
-      BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-      BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+        N = Integer.parseInt(br.readLine());
+        int M = Integer.parseInt(br.readLine());
 
-      // 정점(노드)
-      n = Integer.parseInt(br.readLine());
-      // 간선
-      m = Integer.parseInt(br.readLine());
+        graph = new boolean[N+1][N+1];
+        for (int i = 0; i < M; i++) {
+            StringTokenizer st = new StringTokenizer(br.readLine());
+            int a = Integer.parseInt(st.nextToken());
+            int b = Integer.parseInt(st.nextToken());
 
-      // 인접 리스트 생성
-      graph = new boolean[n+1][n+1];
-      // 방문 여부 저장
-      visited = new boolean[n+1];
-      
-        for (int i = 0; i < m; i++) {
-            StringTokenizer st = new StringTokenizer(br.readLine(), " ");
-            int x = Integer.parseInt(st.nextToken());
-            int y = Integer.parseInt(st.nextToken());
-            // 인접 노드 저장
-            graph[x][y] = true;
-            graph[y][x] = true;
+            graph[a][b] = true;
+            graph[b][a] = true;
         }
 
-        // dfs - 깊이 우선 탐색
-        dfs(1);
+        vistited= new boolean[N+1];
+        q = new LinkedList<>();
+        answer = 0;
+        bfs(1);
 
-        bw.write(answer - 1 + "");
+        bw.write(answer + "");
         bw.flush();
         bw.close();
+    }
 
+    static void bfs(int idx){
+        q.add(idx);
+        vistited[idx] = true;
+
+        while (!q.isEmpty()) {
+            int node = q.poll();
+
+            for (int i = 1; i < N+1; i++) {
+                if (!vistited[i] && graph[node][i]) {
+                    q.add(i);
+                    vistited[i] = true;
+                    answer++;
+                }
+            }
+        }
     }
 }
