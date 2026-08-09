@@ -1,41 +1,42 @@
 import java.util.*;
 
 class Solution {
-    public long solution(int n, int[] times) {
+    public static long solution(int n, int[] times) {
         long answer = 0;
-        // 이분탐색
-        // start = 최초시작(1ms), end = 최악의 시간(max * 인원수)
-        // mid = (start+end) / 2
-        // 각 mid 시간 동안 처리할 수 있는 사람(몫) 의 합
-        // 합 > total => 시간 넉넉 -> 더 최소 시간 구함(왼쪽 탐색)
 
-        // times 정렬
+        // 이분탐색
+        // 1. 시간 : 1 ~ 최대 시간
+        // 2. sum = 중간값 / 심사대 걸리는 시간 당 처리 인원 수
+        // 3. sum < n(총인원)
+
+        // 걸리는 최소 시간
+        
         Arrays.sort(times);
 
+
         long start = 1;
-        long end = (long) times[times.length - 1] * n;
+        long end =  (long) times[times.length - 1] * n;
 
-        while(start <= end){
+
+        while (start <= end) {
             long mid = (start + end) / 2;
-
             long sum = 0;
-            for(int t : times){
-                sum += mid / t;
-                // 인원 수가 넘어가면 계산 중단
-                if (sum >= n) break;
+
+            for (int i = 0; i < times.length; i++) {
+                sum += mid / times[i];
+                if (sum >= n)
+                    break;
             }
 
-            // 왼쪽 탐색
-            if(sum >= n){
+            if (sum >= n) {
+                answer = mid;
                 end = mid - 1;
-            }else{
+
+            } else {
                 start = mid + 1;
             }
         }
 
-        // 시작값이 최소니까
-        answer = start;
-        
         return answer;
     }
 }
