@@ -35,7 +35,7 @@ class Solution {
 
         // begin 이랑 1개만 다른 단어 큐에 넣기
         for (int i = 0; i < words.length; i++) {
-            if(compareWord(begin, words[i]) == 1) {
+            if(compareWord(begin, words[i])) {
                 visited[i] = true;
                 q.add(new Node(words[i], 1));
             }
@@ -51,7 +51,7 @@ class Solution {
             }
 
             for (int i = 0; i < words.length; i++) {
-                if (!visited[i] && compareWord(word, words[i]) == 1) {
+                if (!visited[i] && compareWord(word, words[i])) {
                     // 현재 단어가 target 이면 반황
                     if (words[i].equals(target)) {
                         return depth + 1;
@@ -67,19 +67,19 @@ class Solution {
 
     }
 
-    public int compareWord(String w1, String w2) {
+    public boolean compareWord(String w1, String w2) {
         int cnt = 0;
         for (int i = 0; i < begin.length(); i++){
-            if (w1.charAt(i) == w2.charAt(i)) {
+            if (w1.charAt(i) != w2.charAt(i)) {
                 cnt++;
             }
         }
 
-        if (cnt == begin.length() - 1) {
-            return 1;
+        if (cnt == 1) {
+            return true;
+        } else {
+           return false; 
         }
-
-        return -1;
     }
 
 }
