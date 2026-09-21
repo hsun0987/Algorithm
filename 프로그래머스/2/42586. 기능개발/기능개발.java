@@ -1,27 +1,35 @@
 import java.util.*;
 
 class Solution {
-    public ArrayList<Integer> solution(int[] progresses, int[] speeds) {
-        ArrayList<Integer> answer = new ArrayList<>();
-        Queue<Integer> days = new LinkedList<>();
-
-        // 1. 작업이 필요한 기간 계산
+    public int[] solution(int[] progresses, int[] speeds) {
+        int[] answer = {};
+        
+        // 1. 각 작업일 구하기
+        // 2. 앞에 수보다 작으면 같이 빼기 -> 큐
+        // 3. 처리된 갯수 answer 에 저장 
+        
+        
+        Queue<Integer> q = new LinkedList<>();
         for (int i = 0; i < progresses.length; i++) {
-            int day = (int)Math.ceil((100 - progresses[i]) / (double)speeds[i]);
-            // 2. 기간 큐에 저장
-            days.add(day);
+            int a = 100 - progresses[i];
+            int b = a/speeds[i] + (a%speeds[i] != 0? 1:0);
+            q.add(b);
         }
 
-        while(!days.isEmpty()){
-            int now = days.remove();
-            int count = 1;
-            // 3. 앞선 작업 기간보다 값이 같거나 작으면 같이 pop
-            while(!days.isEmpty() && now >= days.peek()){
-                days.remove();
-                count++;
+        ArrayList<Integer> arr = new ArrayList<>();
+        while (!q.isEmpty()) {
+            int now = q.poll();
+            int cnt = 1;
+            while (!q.isEmpty() && now >= q.peek()) {
+                q.poll();
+                cnt++;
             }
-            // 4. count 해서 answer 에 저장
-            answer.add(count);
+            arr.add(cnt);
+        }
+
+        answer = new int[arr.size()];
+        for (int i = 0; i < arr.size(); i++) {
+            answer[i] = arr.get(i);
         }
         
         return answer;
