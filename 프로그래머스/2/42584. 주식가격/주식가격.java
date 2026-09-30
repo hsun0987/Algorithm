@@ -1,20 +1,24 @@
 import java.util.*;
 
 class Solution {
-    public Stack<Integer> solution(int[] prices) {
-       Stack<Integer> answer = new Stack<>();
-        // 현재 주식 가격보다 작은 가격이 나올 때 -> 떨어진 기간
+    public int[] solution(int[] prices) {
+        int[] answer = new int[prices.length];
+
+        Stack<Integer> stack = new Stack<>();
+
         for (int i = 0; i < prices.length; i++) {
-            int count = 0;
-            for (int j = i+1; j < prices.length; j++) {
-                count++;
-                // 가격이 떨어질 때 빠져나옴 > 시간 초과 방지
-                if (prices[i] > prices[j]){
-                    break;
-                }
+            while (!stack.isEmpty() && prices[stack.peek()] > prices[i]) {
+                int idx = stack.pop();
+                answer[idx] = i - idx;
             }
-            answer.add(count);
+            stack.push(i);
         }
+
+        while(!stack.isEmpty()) {
+            int idx = stack.pop();
+            answer[idx] = prices.length - 1 - idx;
+        }
+        
         return answer;
     }
 }
