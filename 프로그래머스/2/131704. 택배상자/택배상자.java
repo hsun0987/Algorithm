@@ -4,39 +4,29 @@ class Solution {
     public int solution(int[] order) {
         int answer = 0;
 
-        Queue<Integer> q = new LinkedList<>();
-        for (int i : order) {
-            q.add(i);
-        }
-        Stack<Integer> stack = new Stack();
+        Queue<Integer> q = new LinkedList<>(); // 기존 컨테이너
+        Stack<Integer> stack = new Stack(); // 보조 컨테이너
 
-       for (int i = 1; i < order.length + 1; i++) {
-            int current = q.peek();
+        // 현재 상자 순서 인덱스
+        int cnt = 0;
 
-            if (current == i) {
-                q.poll();
-                answer++;
-            } else {
-                // 스택 상위 = 큐 상위 같은지 확인(같을 때까지 반복)
-                while(!stack.isEmpty() && stack.peek().equals(q.peek())) {
-                    stack.pop();
-                    q.poll();
-                    answer++;
+        // 택배상자 이동 1~N
+        for (int i = 1; i < order.length + 1; i++) {
+            stack.push(i);
+
+            while(!stack.isEmpty()) {
+                if (stack.peek().equals(order[cnt])) {
+                    // 보조 -> 기존 옮김
+                    q.add(stack.pop());
+                    cnt++;
+                } else {
+                    break;
                 }
-                stack.push(i);
-
             }
         }
 
-        while (!q.isEmpty() && !stack.isEmpty()) {
-            if (q.peek().equals(stack.peek())) {
-                q.poll();
-                stack.pop();
-                answer++;
-            } else {
-                break;
-            }
-        }
+        // 기존 컨테이너에 담긴 개수
+        answer = q.size();
         return answer;
     }
 }
