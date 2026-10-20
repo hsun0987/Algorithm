@@ -5,7 +5,6 @@ class Solution {
     int[][] wires;
     boolean[] visited;
     boolean[][] graph;
-    int cnt;
 
     int solution(int n, int[][] wires) {
         this.n = n;
@@ -29,10 +28,8 @@ class Solution {
             // A랑 B 구간의 갯수를 따로 구한 후 차를 구해야함
             visited = new boolean[n+1];
             int[] AB = wires[idx]; // 끊은 간선 (이 A, B 구간 구하기)
-            cnt = 0;
-            int A = dfs(AB[0], 0);
-            cnt = 0;
-            int B =  dfs(AB[1], 0);
+            int A = dfs(AB[0]);
+            int B =  dfs(AB[1]);
 
             answer = Math.min(Math.abs(A-B), answer);
             idx++;
@@ -42,17 +39,19 @@ class Solution {
         return answer;
     }
 
-    int dfs (int start, int depth) {
+    int dfs (int start) {
         visited[start] = true;
+        
+        int cnt = 1; // 자기자신
 
         for (int i = 1; i < n+1; i++) {
             if (!visited[i] && graph[start][i]) {
-                cnt++;
-                dfs(i, depth+1);
+                // 방문한 노드의 총 개수 합
+                cnt += dfs(i);
             }
         }
 
-        return cnt + 1;
+        return cnt;
     }
 }
 
