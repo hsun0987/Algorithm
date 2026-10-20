@@ -1,27 +1,35 @@
 class Solution {
-    int answer = 0;
-    int cnt = 0;
-    String[] alphabet = {"A", "E", "I", "O", "U"};
+    String word;
+    char[] arr = {'A', 'E', 'I', 'O', 'U'};
+    int answer;
+    boolean found;
+    
     public int solution(String word) {
-        
-        dfs("", word);
-        
+        answer = 0;
+        found = false;
+
+        this.word = word;
+        dfs(0, "");
+
         return answer;
     }
     
-    public void dfs (String current, String word) {
-        if (current.length() >= 5) {
+    void dfs(int depth, String w) {
+        if (w.equals(word)) {
+            found = true;
             return;
         }
 
-        for (String i : alphabet) {
-            cnt++;
-            String next = current + i;
-            if (next.equals(word)) {
-                answer = cnt;
+        if (w.length() == 5) {
+            return;
+        }
+
+        for (char a : arr) {
+            if (found) { // word 를 찾으면 재귀 반복 X
                 break;
             }
-            dfs(next, word);
+            answer++;
+            dfs(depth+1, w+a);
         }
     }
 }
