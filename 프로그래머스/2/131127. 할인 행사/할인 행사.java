@@ -11,14 +11,14 @@ class Solution {
         
         int start = 0;
         int end = 10;
+        
+        HashMap<String, Integer> curMap = new HashMap<>();
+        // 현재 할인 항목 각 갯수
+        for(int i = start; i < end; i++) {
+            curMap.put(discount[i], curMap.getOrDefault(discount[i], 0) + 1);
+        }
     
-        while(end <= discount.length) {
-            HashMap<String, Integer> curMap = new HashMap<>();
-            // 현재 할인 항목 각 갯수
-            for(int i = start; i < end; i++) {
-                curMap.put(discount[i], curMap.getOrDefault(discount[i], 0) + 1);
-            }
-            
+        while(true) {
             int pass = 0;
             
             // want 랑 비교
@@ -32,7 +32,17 @@ class Solution {
                 answer += 1;
             }
             
+            if(end >= discount.length) {
+                break;
+            }
+                
+                
+            // start + 1 -> 왼쪽 제거
+            curMap.put(discount[start] , curMap.get(discount[start]) - 1);
             start++;
+
+            // end + 1 -> 오른쪽 추가
+            curMap.put(discount[end] , curMap.getOrDefault(discount[end] , 0) + 1);
             end++;
             
         }
