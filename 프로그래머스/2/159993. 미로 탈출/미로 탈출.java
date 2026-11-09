@@ -1,95 +1,100 @@
 import java.util.*;
-
 class Solution {
-     String[] maps;
-    char[][] graph;
-    boolean[][][] visited;
-
+    
     int[] dx = {0, 0, -1, 1};
     int[] dy = {1, -1, 0, 0};
-
+    
+    boolean[][][] visited;
+    char[][] graph;
+    
     class Current {
         int[] xy;
         int cnt;
-        boolean L = false;
-
-        Current() {};
-
-        Current(int[] xy, int cnt, boolean L) {
+        boolean label;
+        
+        Current() {}
+        
+        
+        Current(int[] xy, int cnt, boolean label) {
             this.xy = xy;
             this.cnt = cnt;
-            this.L = L;
+            this.label = label;
         }
     }
-
+    
+    
     public int solution(String[] maps) {
         int answer = 0;
-        this.maps = maps;
-
+        
+        visited = new boolean[maps.length][maps[0].length()][2];
         graph = new char[maps.length][maps[0].length()];
+        
+        // start 지점 찾기
         Current start = new Current();
-        for (int i = 0; i < maps.length; i++) {
+        
+        for(int i = 0; i < maps.length; i++) {
             graph[i] = maps[i].toCharArray();
-
-            // start 위치 찾기
-            for (int j = 0; j < maps[i].length(); j++) {
-                if (graph[i][j] == 'S') {
+            
+            for(int j = 0; j < graph[i].length; j++) {
+                if(graph[i][j] == 'S') {
                     start.xy = new int[]{i, j};
                     start.cnt = 0;
+                    start.label = false;
                 }
             }
         }
-
-        visited = new boolean[graph.length][graph[0].length][2];
+        
         answer = bfs(start);
-
+        
         return answer;
     }
-
+    
     int bfs(Current start) {
-        int sy = start.xy[0];
-        int sx = start.xy[1];
-        // 방문 표시
-        visited[sy][sx][0] = true;
-        // 큐에 넣기
+        int[] xy = start.xy;      
         Queue<Current> q = new LinkedList<>();
         q.add(start);
-
-        while (!q.isEmpty()) {
-            Current current = q.poll();
-            int cy = current.xy[0];
-            int cx = current.xy[1];
-            int cnt = current.cnt;
-            boolean L = current.L;
-
+        visited[xy[0]][xy[1]][0] = true;
+        
+        while(!q.isEmpty()) {
+            Current cur = q.poll();
+            int cy = cur.xy[0];
+            int cx = cur.xy[1];
+            int cnt = cur.cnt;
+            boolean label = cur.label;
+            
+            
+            // E 인 경우 레버 on 확인 
+            if(graph[cy][cx] == 'E' && label) {
+                return cnt;
+            }
+            
+            // 이동 조건 못하는 조건 : X이거나 범위 밖
+            // 이동 조건 : S, E, L, O, 범위 안, 방문 전 
+            // L 인 경우 레버 on -> visited 레버 당긴 이후
+            
             for (int i = 0; i < 4; i++) {
                 int ny = cy + dy[i];
                 int nx = cx + dx[i];
-
-                if (ny >= 0 && ny < graph.length && nx >= 0 && nx < graph[0].length) {
-                    // o & 방문 x -> 큐에 넣기
-                    // 레버 당기기 전 방문
-                    if (!L && !visited[ny][nx][0]) {
-                        // 출발지점도 다시 지나갈 수 있음 !!
-                        if (graph[ny][nx] == 'O' || graph[ny][nx] == 'E' || graph[ny][nx] == 'S') {
-                            visited[ny][nx][0] = true;
-                            q.add(new Current(new int[]{ny,nx}, cnt+1, false));
-                        } else if (graph[ny][nx] == 'L') {
+                
+                if(nx >= 0 && nx < graph[0].length && ny >= 0 && ny < graph.length) {                    
+                    // 현재 상태가 true면 1, false면 0
+                    int state = label ? 1 : 0;
+                    
+                    if(graph[ny][nx] != 'X' && !visited[ny][nx][state]) {
+                        visited[ny][nx][state] = true;
+                        if (graph[ny][nx] == 'L') {
                             visited[ny][nx][1] = true;
-                            q.add(new Current(new int[]{ny,nx}, cnt+1, true));
-                        }
-                    } else if (L && !visited[ny][nx][1]){ // 레버 오픈 후 방문 여부
-                        if (graph[ny][nx] == 'O' || graph[ny][nx] == 'L' || graph[ny][nx] == 'S') {
-                            visited[ny][nx][1] = true;
-                            q.add(new Current(new int[]{ny,nx}, cnt+1, true));
-                        } else if (graph[ny][nx] == 'E') {
-                            return cnt + 1;
+                            q.add(new Current(new int[]{ny, nx}, cnt + 1, true));
+                        } else {
+                           q.add(new Current(new int[]{ny, nx}, cnt + 1, label));
                         }
                     }
                 }
             }
         }
+
         return -1;
     }
-
 }
+
+
