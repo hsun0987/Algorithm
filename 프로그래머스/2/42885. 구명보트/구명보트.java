@@ -3,23 +3,25 @@ import java.util.*;
 class Solution {
     public int solution(int[] people, int limit) {
         int answer = 0;
-        
+
+        // 정렬
         Arrays.sort(people);
+        
+        // 가장 가벼운 사람 + 가장 무거운 사람 <= limit
+        // answer++ start++, end--
+        // limit 보다 크면 무거운 사람만 태우기 
+        // answer++ end-- 
         
         int start = 0;
         int end = people.length - 1;
         
         while(start <= end) {
-           
-            int sum = people[start] + people[end];
-            
-            if(sum <= limit) { // 가장 가볍 + 무겁 같이 보트 태움
+            if((people[start] + people[end]) <= limit) {
                 start++;
                 end--;
-            } else { // 무거운 사람만 보트 태움
+            } else {
                 end--;
             }
-            
             answer++;
         }
         
