@@ -11,13 +11,9 @@ class Solution {
         
         for(int i = 0; i < answers.length; i++) {
             if(answers[i] == s1[i % s1.length]) cnt[0]++;
-        }
-        
-        for(int i = 0; i < answers.length; i++) {
+            
             if(answers[i] == s2[i % s2.length]) cnt[1]++;
-        }
-        
-        for(int i = 0; i < answers.length; i++) {
+            
             if(answers[i] == s3[i % s3.length]) cnt[2]++;
         }
         
